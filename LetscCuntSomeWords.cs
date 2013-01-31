@@ -1,3 +1,9 @@
+//Solution for:
+//Write a program that reads a list of words from a file words.txt and finds how many times 
+//each of the words is contained in another file test.txt. 
+//The result should be written in the file result.txt and the words should be sorted by the number of their occurrences
+//in descending order. Handle all possible exceptions in your methods.
+
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,20 +16,19 @@ class LetscCuntSomeWords
     {
         try
         {
-            string wordsStr = null; //ще записва списъка с думите като стринг от начало до край
+            string wordsStr = null; //string for the file, containing the words that are going to be counted later
             StreamReader words = new StreamReader(".../.../words.txt");
-            using (words) //четем списък с думи, които ще броим
+            using (words) //reading from the text files in which we are going to count the given words
             {
                 wordsStr = words.ReadToEnd();
             }
 
-            string[] oneWordOnly = wordsStr.Split('\n', ' '); //разделяме прочетените думи като стринг на отделни елементи
+            string[] oneWordOnly = wordsStr.Split('\n', ' '); //splitting string into sepatate words
             for (int i = 0; i < oneWordOnly.Length; i++)
             {
-                oneWordOnly[i] = oneWordOnly[i].TrimEnd('\r'); //изглаждаме ги от към краища 
+                oneWordOnly[i] = oneWordOnly[i].TrimEnd('\r'); //trimming the words for being exact
             }
-            int[] counters = new int[oneWordOnly.Length]; //създаваме им броячи, които ще се пазят в масив с индекси тези от масива на думите
-
+            int[] counters = new int[oneWordOnly.Length]; //assigning counters for each word
             StreamReader text = new StreamReader(".../.../text.txt");
             using (text)
             {
@@ -32,7 +37,7 @@ class LetscCuntSomeWords
                 {
                     for (int i = 0; i < counters.Length; i++)
                     {
-                        counters[i] += Regex.Matches(line, @"\b" + oneWordOnly[i] + @"\b").Count; //за всяка дума от масива с думи прибавяме по колко пъти се среща на всеки ред от четения файл
+                        counters[i] += Regex.Matches(line, @"\b" + oneWordOnly[i] + @"\b").Count; //counting the words
                     }
                     line = text.ReadLine();
                 }
@@ -54,6 +59,8 @@ class LetscCuntSomeWords
                 }
             }
         }
+        
+        //handling exceptions
         catch (FileNotFoundException fe)
         {
             Console.WriteLine(fe.Message);
